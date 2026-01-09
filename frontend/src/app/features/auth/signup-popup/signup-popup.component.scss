@@ -1,0 +1,103 @@
+::ng-deep .p-dialog {
+    background-color: #202123;
+    border: 1px solid #444;
+    border-radius: 8px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    color: #ececec;
+    font-family: inherit;
+
+    .p-dialog-header {
+        background-color: #202123;
+        color: #ececec;
+        border-bottom: none;
+        padding: 24px 24px 0 24px;
+
+        .p-dialog-title {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .p-dialog-header-icon {
+            color: #8e8ea0;
+
+            &:hover {
+                color: #ececec;
+                background: transparent;
+            }
+        }
+    }
+
+    .p-dialog-content {
+        background-color: #202123;
+        color: #ececec;
+        padding: 24px;
+    }
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .field {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        label {
+            font-size: 0.9rem;
+            color: #ececec;
+        }
+
+        input {
+            width: 100%;
+            background-color: #212121;
+            border: 1px solid #444;
+            color: white;
+            padding: 12px;
+            border-radius: 4px;
+
+            &:focus {
+                border-color: #A7ABDE;
+                /* Updated Focus Color */
+                box-shadow: 0 0 0 1px #A7ABDE;
+            }
+        }
+    }
+
+    .full-width {
+        width: 100%;
+    }
+
+    .auth-submit-btn {
+        width: 100%;
+        padding: 12px;
+        font-weight: bold;
+        background: #A7ABDE !important;
+        /* Updated Button Color */
+        color: #202123 !important;
+        /* Dark text */
+        border: none;
+
+        &:hover {
+            background: #A7ABDE !important;
+        }
+    }
+
+    .auth-footer {
+        text-align: center;
+        font-size: 0.9rem;
+        color: #8e8ea0;
+
+        a {
+            color: #A7ABDE;
+            /* Updated Link Color */
+            cursor: pointer;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}

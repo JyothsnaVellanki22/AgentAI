@@ -1,0 +1,58 @@
+<p-dialog header="Create your account" [(visible)]="visible" [modal]="true" [style]="{ width: '400px' }"
+    [draggable]="false" [resizable]="false" (onHide)="onClose()">
+
+    <form [formGroup]="signupForm" class="auth-form" (ngSubmit)="onSignup()">
+
+        <!-- Email -->
+        <div class="field">
+            <label for="signup-email">Email</label>
+            <input pInputText id="signup-email" type="email" placeholder="Enter your email" formControlName="email" />
+
+            <small class="error" *ngIf="signupForm.get('email')?.touched &&
+               signupForm.get('email')?.invalid">
+                <span *ngIf="signupForm.get('email')?.errors?.['required']">
+                    Email is required
+                </span>
+                <span *ngIf="signupForm.get('email')?.errors?.['email']">
+                    Enter a valid email
+                </span>
+            </small>
+        </div>
+
+        <!-- Password -->
+        <div class="field">
+            <label for="signup-password">Password</label>
+            <input pInputText id="signup-password" type="password" placeholder="At least 8 characters"
+                formControlName="password" />
+
+            <small class="error" *ngIf="signupForm.get('password')?.touched &&
+               signupForm.get('password')?.invalid">
+                <span *ngIf="signupForm.get('password')?.errors?.['required']">
+                    Password is required
+                </span>
+                <span *ngIf="signupForm.get('password')?.errors?.['minlength']">
+                    Password must be at least 8 characters
+                </span>
+            </small>
+        </div>
+
+        <!-- Backend / API Error -->
+        <small class="error text-center" *ngIf="errorMsg">
+            {{ errorMsg }}
+        </small>
+
+        <!-- Submit -->
+        <button pButton type="submit" label="Continue" class="auth-submit-btn full-width"
+            [disabled]="signupForm.invalid">
+        </button>
+
+        <!-- Footer -->
+        <div class="auth-footer">
+            <span>
+                Already have an account?
+                <a (click)="onSwitchToLogin()">Log in</a>
+            </span>
+        </div>
+
+    </form>
+</p-dialog>

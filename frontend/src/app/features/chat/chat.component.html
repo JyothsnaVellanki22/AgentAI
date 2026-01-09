@@ -1,0 +1,128 @@
+<div class="container">
+    <div class="sidebar" *ngIf="isSidebarOpen">
+        <!-- Sidebar Header: Close Button (Top Right) -->
+        <div class="sidebar-header">
+            <button class="close-sidebar-btn" (click)="toggleSidebar()" matTooltip="Close Sidebar">
+                <i class="pi pi-times"></i>
+            </button>
+        </div>
+
+        <!-- Navigation Items -->
+        <div class="nav-items">
+            <!-- New Chat Item -->
+            <button class="nav-item new-chat-btn" (click)="startNewChat()">
+                <i class="pi pi-pencil"></i>
+                <span>New chat</span>
+            </button>
+
+            <!-- Search Chats Item -->
+            <div class="nav-item search-item">
+                <i class="pi pi-search"></i>
+                <span>Search chats</span>
+                <!-- <input type="text" placeholder="Search chats..."> -->
+                <!-- Note: Mockup implies a button/link style, maybe clicking search reveals input or modal. 
+                      For now, let's keep it as an input disguised as a list item or just a static item if functionality isn't prioritized.
+                      User said "make both new text and search chats looks alike". 
+                      I'll make Search an input that looks exactly like the button. -->
+            </div>
+        </div>
+
+        <div class="header">
+            <span>Recent</span>
+        </div>
+
+        <div class="conversation-list">
+            <div class="conversation-item" *ngFor="let conv of conversations"
+                [class.active]="conv.id === currentConversationId" (click)="selectConversation(conv)">
+                <i class="pi pi-comments msg-icon"></i>
+                <span class="title">{{ conv.title }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-chat">
+        <!-- Open Sidebar Button (Visible only when sidebar is closed) -->
+        <button mat-icon-button class="open-sidebar-btn" *ngIf="!isSidebarOpen" (click)="toggleSidebar()"
+            matTooltip="Open Sidebar">
+            <i class="pi pi-bolt" style="color: white; font-size: 1.2rem;"></i>
+        </button>
+
+        <!-- Auth Buttons (Top Right) -->
+        <div class="auth-buttons">
+            <button pButton label="Log In" class="p-button-text p-button-plain auth-btn" (click)="showLogin()"></button>
+            <button pButton label="Sign Up" class="p-button-rounded p-button-success auth-btn"
+                (click)="showSignup()"></button>
+        </div>
+
+        <!-- Login Component -->
+        <app-login-popup [(visible)]="loginVisible" (switchToSignup)="showSignup()"></app-login-popup>
+
+        <!-- Signup Component -->
+        <app-signup-popup [(visible)]="signupVisible" (switchToLogin)="showLogin()"></app-signup-popup>
+
+        <!-- Toolbar hidden or minimal if desired, keeping for now but minimal -->
+        <!-- <mat-toolbar color="primary" class="chat-toolbar" *ngIf="false">...</mat-toolbar> -->
+
+        <!-- Greeting when empty -->
+        <div class="greeting-area" *ngIf="messages.length === 0">
+            <h1>What's on your mind today?</h1>
+
+            <div class="suggestion-cards">
+                <button class="suggestion-card" (click)="newMessage='Brainstorm ideas for a startup'; sendMessage()">
+                    <div class="card-icon"><i class="pi pi-bolt"></i></div>
+                    <div class="card-text">Brainstorm ideas</div>
+                </button>
+                <button class="suggestion-card"
+                    (click)="newMessage='Write a python script to parse JSON'; sendMessage()">
+                    <div class="card-icon"><i class="pi pi-code"></i></div>
+                    <div class="card-text">Code a python script</div>
+                </button>
+                <button class="suggestion-card"
+                    (click)="newMessage='Explain quantum computing to a 5 year old'; sendMessage()">
+                    <div class="card-icon"><i class="pi pi-lightbulb"></i></div>
+                    <div class="card-text">Explain quantum computing</div>
+                </button>
+                <button class="suggestion-card" (click)="newMessage='Draft a professional email'; sendMessage()">
+                    <div class="card-icon"><i class="pi pi-envelope"></i></div>
+                    <div class="card-text">Draft an email</div>
+                </button>
+            </div>
+        </div>
+
+        <div class="messages-area" #scrollContainer>
+            <div class="message" *ngFor="let msg of messages" [ngClass]="msg.role">
+                <div class="avatar">
+                    <div *ngIf="msg.role === 'user'">U</div>
+                    <div *ngIf="msg.role !== 'user'">AI</div>
+                </div>
+                <div class="content">
+                    <markdown [data]="msg.content"></markdown>
+                </div>
+            </div>
+
+            <!-- AI typing indicator -->
+            <div class="message assistant typing" *ngIf="loading">
+                <div class="avatar">AI</div>
+                <div class="content">Thinking...</div>
+            </div>
+        </div>
+
+        <!-- Input Area at bottom -->
+        <div class="input-wrapper">
+            <div class="input-container">
+                <button mat-icon-button (click)="fileInput.click()" matTooltip="Upload Document" class="attach-btn">
+                    <i class="pi pi-paperclip" style="font-size: 1.2rem"></i>
+                </button>
+                <input #fileInput type="file" (change)="onFileSelected($event)" style="display:none" accept=".txt,.md">
+
+                <input class="custom-input" [(ngModel)]="newMessage" (keyup.enter)="sendMessage()"
+                    placeholder="Ask Anything...">
+
+                <button mat-icon-button (click)="sendMessage()" [disabled]="loading || !newMessage.trim()"
+                    class="send-btn">
+                    <i class="pi pi-arrow-up" style="font-size: 1.2rem"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
